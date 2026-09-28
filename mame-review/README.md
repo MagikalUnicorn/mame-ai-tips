@@ -10,7 +10,9 @@ what Vas and other maintainers are looking for.
 Copy this entire mame-review folder into your agent's skills directory.  Or ask your agent how it wants this installed.
 
 Claude Code on Linux or macOS: ~/.claude/skills/
+
 Codex on Linux or macOS: ~/.codex/skills/
+
 Grok Code on Linux or macOS: ~/.grok/skills/
 
 ## How to use
