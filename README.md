@@ -1,5 +1,5 @@
 # Tips for using AI to help with MAME development
-Hints and tips for using AI assistance with MAME.  Version 4.1, September 30, 2026.
+Hints and tips for using AI assistance with MAME.  Version 4.1.1, September 30, 2026.
 
 **WARNING**: so-called "vibe coding" is *not acceptable* for MAME.  You're welcome to use it for personal things for yourself, but for doing actual submittable MAME work you need some experience with programming and the ability to understand and edit what the AI models output.  I do let the models generate some code, but I always go over it line-by-line, ask the model to fix large-scale things I don't like, and make dozens or hundreds of smaller edits (e.g. variable naming and other stylistic things) myself.  I don't submit anything I couldn't have written myself given sufficient time.
 
@@ -8,7 +8,7 @@ Also, please write the submission comment yourself.  You can restate things the 
 One stylistic note: when typing prompts, I bracket file and pathnames with backticks so that names with spaces in them aren't ambiguous.  Here in Markdown land that translates to the `code style` with a gray background.  I found that appropriate so I've kept it.
 
 ## What models can I use?
-Any of the current frontier or near-frontier models have given good results.  I lack the local hardware to effectively run any of the high-end open weights models so my suggestions will stick to the well-known closed ones: **Sonnet 5.5**, **Opus 5.5**, or **Fable 5.1** from [Anthropic](https://claude.ai/), **GPT-6** and **GPT-5.6** from [OpenAI](https://openai.com/), or **Grok 4.7** from [SpaceX AI](https://x.ai/).  I have personally done useful MAME work with each of the listed models.
+Any of the current frontier or near-frontier models have given good results.  I lack the local hardware to effectively run any of the high-end open weights models so my suggestions will stick to the well-known closed ones: **Sonnet 5.5**, **Opus 5.5**, and **Fable 5.1** from [Anthropic](https://claude.ai/), **GPT-6.1**, **GPT-6**, and **GPT-5.6** from [OpenAI](https://openai.com/), and **Grok 4.7** from [SpaceX AI](https://x.ai/).  I have personally done useful MAME work with each of the listed models.
 
 Note that the version listed is important!  **Opus 4.8** can and has done useful MAME work but is much more likely to go haywire and need your guidance.  **GPT 5.5** is when GPT started getting really good for code, 5.6 is quite a bit better in my testing, and 6 has cracked some problems we thought were impossible.  Sol 6 was a regression, but 6.1 seems to have regained its mojo.  **Grok 4.5** is the first version that's able to do good quality MAME work, and 4.6 is a significant upgrade over that.  4.7 is better at some things, but not a clear improvement.
 
@@ -69,14 +69,16 @@ You're working on something where the CPU is well known and it's up and running 
 ## Things I've learned
 - You get better results on multi-step tasks by asking the model to create a plan for what you want first.  That also gives you an opportunity to review the plan and issue corrections and clarifications.
 - When sending the model on a bug hunt, not every change it makes will turn out to be important once you get to success.  It's always a good idea to try reverting each of the changes afterwards to find out what was important.  The Mac II A/UX patch I was sent originally was much, much more invasive than what actually landed.  (Admittedly, the one to macscsi.cpp was more involved but it also fixed A/UX on all 5380 machines).
-- Models can and do get off on a tangent that's not useful towards solving your problem, especially when performing bug tracing.  Don't be afraid to hit Esc to stop them and offer a correction.  Codex has the "nudge" feature for exactly this reason.
+- Models, especially older or lower-end ones, can and do get off on a tangent that's not useful towards solving your problem, especially when performing bug tracing.  Don't be afraid to hit Esc to stop them and offer a correction.  Codex has the "nudge" feature for exactly this reason.
 - The longer a session runs and the more context builds up, the dumber the model gets.  Don't be afraid to ask it to create a handoff document, and then use that handoff document to seed a new, clean session that will "think more clearly".
+- Don't be afraid to lean on your model's "memories" (actually Markdown files it stores somewhere internal) as it learns about the MAME codebase.
+- On macOS and Linux, if the model's done a lot of work and you need to reboot (e.g. for a security update that was probably precipitated by a model in the first place), /tmp will sometimes get wiped, so ask the model first to copy its scratchpad somewhere safe.
 - When you are having the model generate code, tell it in advance what your preferred bracing style is (GNU, or Allman, or "follow the style of the rest of the file").
 - Don't be afraid to ruthlessly edit the comments it adds.  Models output a paragraph where a sentence will do and a sentence in cases where even a junior programmer can see what's happening.  Including something like "Keep comments limited to tricky or unclear algorithms, and don't justify the changes" in your prompt can help too.
 - If you're in a work tree that you don't want to submit directly from, tell it to not do any git write operations.
 
 ## When submitting to MAME
 - Take a final pass over the code.  Make sure comments are useful and not just spewing.  Anthropic's models in particular love to basically apologize on bended knee for every line changed, and that's unnecessary and off-putting.
-- Use my mame-review skill.  But do it in a separate session/chat from the actual work (type /clear or /new first).  If you have multiple agents available, it can be a good idea to have /mame-review on Codex check work where Claude assisted.
+- Use my mame-review skill.  But do it in a separate session/chat from the actual work (type /clear or /new first).  If you have multiple agents available, it can be a good idea to have /mame-review on Codex check work where Claude assisted or vice-versa.
 - Write the pull request description yourself.  If you don't natively write English and want to use the model to translate, that's fine, it's still a more "human" result than having the model write the description itself.  A bunch of show-and-tell in the description is not necessary (if you include a table, you're probably doing it wrong).  Just tell us what changed and what it fixed.  MAME's historical readme.txt files provide a good idea of what good taste looks like in pull request descriptions.
 - Don't forget your AI usage disclosure.
